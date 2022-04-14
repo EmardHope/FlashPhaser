@@ -1,6 +1,6 @@
 const env = "mainnet";
-const chainId = 42220;//42161;//A4B1
-const price = 1;
+const chainId = 421611;//42161;//A4B1
+const price = 0.006;
 let address;
 
 const contractAddress = "0x1325ca674DfAD98224494d4b6b1d6516C340bc16";
