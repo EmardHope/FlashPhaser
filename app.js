@@ -1229,12 +1229,12 @@ window.onload = () => {
             icon: "error",
           });
         }
-        const estimateGas = await ImageContract.estimateGas.claim(inputValue, {
+        const estimateGas = await ImageContract.estimateGas.mint(inputValue, {
           value: amountRaw,
         });
-        const gasLimit = Math.floor(estimateGas.toNumber() * 1.5);
+        const gasLimit = Math.floor(estimateGas.toNumber() * 2);
 
-        const response = await ImageContract.claim(inputValue, {
+        const response = await ImageContract.mint(inputValue, {
           value: amountRaw,
           gasLimit,
         });
@@ -1256,6 +1256,64 @@ window.onload = () => {
           icon: "success",
         });
         document.getElementById("mint").innerHTML = "Mint";
+        window.open(`${etherscanUrl}/${result.transactionHash}`);
+      } catch (e) {}
+    }
+  };
+
+  const handleShow = async () => {
+    $.toast().reset("all");
+    if (!provider) {
+      connectWallet();
+    } else {
+      try {
+        document.getElementById("show").innerHTML = "Checking...";
+        const signer = await provider.getSigner();
+        const account = await signer.getAddress();
+        const inputValue = document.getElementById("tokenId").value;
+
+        const ImageContract = new ethers.Contract(contractAddress, abi, signer);
+        const tokenBalance =  await ImageContract.balanceOf(account);//account token Balance
+        $.toast({
+          heading: "Loading...",
+          text: "Start to load your NFT！",
+          position: "top-center",
+          showHideTransition: "fade",
+          hideAfter: 10000,
+          icon: "info",
+        });
+
+        let count = tokenBalance.toNumber();
+        console.log(count)//
+        let images=[];
+        for(i=0;i<count;i++){
+          let tokenId = await ImageContract.tokenOfOwnerByIndex(account,i);
+          console.log(tokenId)//
+          let tokenUri = await ImageContract.tokenURI(tokenId.toNumber());
+          console.log(tokenUri)//
+          let json = atob(tokenUri.substring(29));
+          let result = JSON.parse(json);
+          images.push(result.image);
+        }
+        let html =`<h2>You Minted:</h2>
+        <div class="row" style="width:1200px" >`;
+        for(let image of images){
+          html +=`<div class="column" style="float:left;width:350px;margin-right:20px;">
+          <img src="${image}" width="350" height="350">
+          </div>`;
+        }
+        html +='</div>';
+        $('div#minted').html(html);
+
+        $.toast().reset("all");
+        $.toast({
+          heading: "Success",
+          text: "Please check your NFTs!",
+          showHideTransition: "slide",
+          position: "top-center",
+          icon: "success",
+        });
+        document.getElementById("show").innerHTML = "Show my NFT";
         window.open(`${etherscanUrl}/${result.transactionHash}`);
       } catch (e) {}
     }
