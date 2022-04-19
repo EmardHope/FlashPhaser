@@ -1,4 +1,4 @@
-import ABI from 'ABI.json'
+import ABI from './ABI.json'
 
 const env = "mainnet";
 const chainId = 421611;//42161;//A4B1
@@ -301,7 +301,8 @@ window.onload = () => {
       } catch (e) {}
     }
   };
-  document.getElementById("mint").addEventListener("click", handleMint);
-  document.getElementById("show").addEventListener("click", handleShow);
+
+  //document.getElementById("mint").addEventListener("click", handleMint);
+  //document.getElementById("show").addEventListener("click", handleShow);
   document.getElementById("cross").addEventListener("click", handleCross);
 };
