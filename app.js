@@ -1,4 +1,4 @@
-import ABI from './ABI.json'
+var   ABI  = require('./ABI.json');
 
 const env = "mainnet";
 const chainId = 421611;//42161;//A4B1
