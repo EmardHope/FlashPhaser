@@ -1,5 +1,5 @@
-{
-		"abi": [
+
+	let abi= [
 			{
 				"inputs": [
 					{
@@ -1122,4 +1122,7 @@
 				"type": "function"
 			}
 		]
-	}
+
+		module.exports = {
+			abi
+			}
